@@ -1,0 +1,72 @@
+
+    @Brief : Creer un Thread
+	
+	@Prototype :
+	
+	int pthread_create(phtread_t *restrict thread,
+							const pthread_attr_t *restrict attr,
+							void *(*start_routine)(void *),
+							void *restrict arg);
+
+	@arguments :
+	
+	1) thread -> 
+		Un pointeur vers variable de type pthread_t
+		Pour stocker l id qui va etre creer
+		
+	2) attr ->
+		Un argument qui permet de changer les attributs par defaut du
+		nouveau thread a sa creation. (Mettre a NULL)
+		
+	3) start_routine ->
+		Fonction par laquelle start commence son execution
+		Elle doit avoir pour prototype ->
+		void *nom_de_fonction(void *arg)
+		(une fois thread arriver a la fin de cette fonction = tache terminer)
+	
+	4) arg ->
+		Le pointeur vers un argument a transmettre la fonction start_routine\
+		Pour lui passer plusieurs arg il faut lui renseigner un ptr sur une 
+		structure de donnee
+	
+	@end :
+	
+		Renvoie 0 si la creation s est bien passe ou code erreur
+
+
+
+	@Creer un thread ou le detacher
+	
+	Pour bloquer l exécution d un thread en attendant qu un autre 
+	thread se termine, 
+	
+	@Prototype
+	
+	int pthread_join(pthread_t thread, void **retval);
+	
+	@arg
+	
+	1) thread ->
+		L identitfiant du thread que l on attend.
+		IL doit etre joignable (non detacher)
+
+	2) retval ->
+		Un pointeur vers une variable qui peut contenir la valeur de retour
+		de la fonction routine du thread.
+		Si on a pas besoin de cette valeur on peut renseigner NULL
+
+	@return value ->
+		0 succes ou cas d erreur
+	
+	Dans certain cas il est possible et preferable de ne pas s occuper 
+	d attendre la fin de certaqins threads, on peut alors detacher le thread
+	pour indiquer au systeme qu il peut recuperer ses ressources des que le 
+	thread termine , on utilise la fontion pthread_detach(generalement apres
+	la creation du thread)
+
+	int pthread_detach(phtread_t thread);
+	
+	On a simplement renseigner l identifiant du thread.
+	Valeur de retour = 0 si le detachement s est bien passer ou code erreur
+	Une fois detacher, aucun thread ne peux le tuer ou recuperer le thread 
+	avec pthread_join
